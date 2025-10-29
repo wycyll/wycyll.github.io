@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Couple's Website</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+            /* 基础和布局样式 */
+            body {
+                font-family: 'Georgia', 'Times New Roman', serif; /* 优雅的字体 */
+                margin: 0;
+                padding: 0;
+                background-color: #f8f5f2; /* Neutral and elegant background */
+                color: #4a4a4a; /* Sophisticated dark gray */
+            }
+            header {
+                background: #a67c52 url('background.jpg') no-repeat center center; 
+                background-size: cover;
+                color: #ffffff; 
+                padding: 40px 20px;
+                text-align: center;
+                opacity: 0.95; /* 增加不透明度以提高可读性 */
+            }
+            nav {
+                display: flex;
+                flex-direction: row; 
+                justify-content: center;
+                align-items: center;
+                background-color: #a67c52; 
+                padding: 15px;
+            }
+            nav a {
+                margin: 0 15px; 
+                text-decoration: none;
+                color: #ffffff; 
+                font-weight: bold;
+                text-align: center;
+            }
+            nav a:hover {
+                text-decoration: underline;
+                color: #f8f5f2; 
+            }
+            .content {
+                padding: 20px;
+            }
+            .timer {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+                color: #ffffff;
+            }
+            .story, .section {
+                background-color: #ffffff; 
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            }
+            
+            /* 日历基础样式 */
+            .calendar {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 10px;
+                margin-top: 20px;
+            }
+            .calendar div {
+                padding: 10px;
+                text-align: center;
+                border-radius: 5px;
+            }
+            .calendar .header {
+                font-weight: bold;
+                background-color: #a67c52; 
+                color: #ffffff;
+            }
+            
+            /* Grid 布局 */
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 2列布局 */
+                grid-template-rows: auto auto auto;
+                grid-template-areas: 
+                    "calendar photo"
+                    "story checkin"
+                    "todo milestones";
+                grid-gap: 20px;
+                padding: 20px;
+                max-width: 1200px; /* 限制最大宽度 */
+                margin: 0 auto;
+            }
+            .calendar-section { grid-area: calendar; }
+            .photo-section { grid-area: photo; }
+            .checkin-section { grid-area: checkin; }
+            .story-section { grid-area: story; }
+            .todo-section { grid-area: todo; }
+            .milestones-section { grid-area: milestones; }
+
+            /* --- 核心优化部分：日历导航按钮样式 --- */
+            #calendar-controls {
+                display: flex;
+                justify-content: space-between; /* 空间分布 */
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            #current-month {
+                font-size: 1.4em; /* 月份文字放大 */
+                font-weight: bold;
+                color: #8c6239; /* 深棕色 */
+            }
+            #calendar-controls button {
+                font-family: 'Georgia', serif; 
+                font-size: 1em; 
+                background-color: transparent; /* 透明背景 */
+                color: #a67c52; /* 主题色文字 */
+                border: 2px solid #a67c52; /* 细边框 */
+                padding: 8px 15px;
+                border-radius: 20px; /* 柔和的圆角 */
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                min-width: 100px;
+            }
+            #calendar-controls button:hover {
+                background-color: #a67c52; 
+                color: #ffffff;
+                box-shadow: 0 4px 8px rgba(166, 124, 82, 0.3);
+            }
+
+            /* --- 核心优化部分：用户/心情选择按钮样式 --- */
+
+            #user-modal button,
+            #mood-modal button {
+                font-family: 'Georgia', serif; 
+                font-size: 1em; 
+                background-color: #f7f7f7; 
+                color: #a67c52; 
+                border: 1px solid #a67c52;
+                padding: 10px 15px;
+                margin: 5px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                min-width: 90px;
+            }
+            #user-modal button:hover,
+            #mood-modal button:hover {
+                background-color: #a67c52;
+                color: #ffffff;
+            }
+        </style>
+</head>
+<body>
+    <header>
+        <h1>62r with sp1</h1>
+        <div class="timer">We have been in love for: <span id="timer"></span></div>
+    </header>
+    <nav>
+        <a href="#story">小狗日记</a>
+        <a href="#calendar">日历</a>
+        <a href="#checkin">打卡</a>
+        <a href="#todo">待办事项</a>
+        <a href="#milestones">大事记</a>
+        <a href="#photo">相册</a>
+    </nav>
+    <div class="content grid-container">
+        <div class="section calendar-section">
+            <h2>日历</h2>
+            <div id="calendar-controls">
+                <button class="nav-button" onclick="changeMonth(-1)">&#9664; 上个月</button>
+                <span id="current-month"></span>
+                <button class="nav-button" onclick="changeMonth(1)">下个月 &#9654;</button>
+            </div>
+            <div class="calendar">
+                <!-- Calendar days will be dynamically generated here -->
+            </div>
+        </div>
+
+        <div class="section story-section">
+            <h2>小狗日记</h2>
+            <p id="story"></p>
+            <textarea id="log-input" placeholder="Write your log here..." style="width: 100%; height: 150px;"></textarea>
+            <button onclick="saveLogForToday()" style="margin-top: 15px;">Save Log</button>
+        </div>
+
+        <div class="section checkin-section">
+            <h2>打卡</h2>
+            <p>记录每日锻炼、心情和生理期。</p>
+        </div>
+
+        <div class="section photo-section">
+            <h2>Photo Album</h2>
+            <p>Coming soon...</p>
+        </div>
+
+        <div class="section todo-section">
+            <h2>待办事项</h2>
+            <p>管理你们的待办任务。</p>
+        </div>
+
+        <div class="section milestones-section">
+            <h2>大事记</h2>
+            <p>记录你们的重要时刻。</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
