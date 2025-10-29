@@ -108,6 +108,11 @@ function generateCalendar(year, month) {
 }
 
 function createModalOverlay() {
+    const existingOverlay = document.getElementById('modal-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove(); // Remove any existing overlay
+    }
+
     const overlay = document.createElement('div');
     overlay.id = 'modal-overlay';
     overlay.style.position = 'fixed';
@@ -117,6 +122,10 @@ function createModalOverlay() {
     overlay.style.height = '100%';
     overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     overlay.style.zIndex = '999';
+    overlay.addEventListener('click', () => {
+        document.querySelectorAll('.photo-modal').forEach(modal => modal.remove()); // Remove all modals
+        overlay.remove(); // Remove overlay from DOM
+    });
     document.body.appendChild(overlay);
 }
 
@@ -287,3 +296,4 @@ function updateStoryAndLog() {
 }
 
 updateStoryAndLog();
+

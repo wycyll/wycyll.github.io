@@ -161,3 +161,27 @@ nav a:hover {
     color: #ffffff;
     box-shadow: none; /* 移除悬停阴影 */
 }
+
+/* Photo Album Grid Layout */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two images per row */
+    gap: 20px; /* Adjusted gap for better spacing */
+    margin-top: 20px;
+}
+
+.photo-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; /* 鼠标悬停时显示可点击 */
+}
+
+.photo-grid img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
