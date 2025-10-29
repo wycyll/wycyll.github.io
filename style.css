@@ -1,0 +1,187 @@
+/* 基础和布局样式 */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f5f2; /* 柔和的背景色 */
+    color: #4a4a4a;
+}
+header {
+    background: #a67c52 url('background.jpg') no-repeat center center;
+    background-size: cover;
+    color: #ffffff; 
+    padding: 40px 20px;
+    text-align: center;
+    opacity: 0.95;
+}
+nav {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    background-color: #a67c52; 
+    padding: 15px;
+}
+nav a {
+    margin: 0 15px; 
+    text-decoration: none;
+    color: #ffffff; 
+    font-weight: bold;
+    text-align: center;
+}
+nav a:hover {
+    text-decoration: underline;
+    color: #f8f5f2; 
+}
+.content {
+    padding: 20px;
+}
+.timer {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+.story, .section {
+    background-color: #ffffff; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: none; /* 移除 section/story 阴影 */
+    border: 1px solid #e0e0e0; /* 可选：用极细的浅色边框来分隔区块 */
+}
+
+/* Grid 布局 */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+        "calendar photo"
+        "story checkin"
+        "todo milestones";
+    grid-gap: 20px;
+    padding: 20px;
+    max-width: 1200px; 
+    margin: 0 auto;
+}
+.calendar-section { grid-area: calendar; }
+.photo-section { grid-area: photo; }
+.checkin-section { grid-area: checkin; }
+.story-section { grid-area: story; }
+.todo-section { grid-area: todo; }
+.milestones-section { grid-area: milestones; }
+
+/* 日历容器和头部 */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+.calendar .header {
+    font-weight: bold;
+    background-color: #a67c52; 
+    color: #ffffff;
+}
+
+.calendar div {
+    padding: 10px;
+    text-align: center;
+    background-color: #f0efef; /* 默认白色背景 */
+    border-radius: 0; /* 移除圆角 */
+    border: none; 
+    box-shadow: none; /* 移除阴影 */
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.calendar div:hover {
+        background-color: #f0f0f0; 
+    }
+
+.calendar div.today {
+    background-color: #a67c52 !important; /* 棕色背景 */
+    color: #000000;
+    font-weight: bold;
+}
+
+
+/* --- 核心修正 2: 日历导航按钮 (无边框，无阴影，仅背景色变化) --- */
+#calendar-controls {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 20px;
+}
+#current-month {
+    font-size: 1.4em; 
+    font-weight: bold;
+    color: #8c6239; 
+}
+
+.nav-button,
+#calendar-controls button {
+    font-family: 'Georgia', serif; 
+    font-size: 1em; 
+    background-color: transparent; 
+    color: #a67c52; 
+    border: none !important; /* 彻底移除边框 */
+    box-shadow: none !important; /* 彻底移除阴影 */
+    padding: 10px 17px;
+    border-radius: 20px; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: none;
+}
+.nav-button:hover,
+#calendar-controls button:hover {
+    background-color: #a67c52; 
+    color: #ffffff;
+    /* 悬停时无阴影 */
+}
+
+/* --- 核心修正 3: 模态框内的按钮 (无边框，无阴影) --- */
+#user-modal button,
+#mood-modal button {
+    font-family: 'Georgia', serif; 
+    font-size: 1em; 
+    background-color: #ffffff; 
+    color: #a67c52; 
+    border: none; /* 移除边框 */
+    box-shadow: none; /* 移除阴影 */
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 90px;
+}
+#user-modal button:hover,
+#mood-modal button:hover {
+    background-color: #a67c52;
+    color: #ffffff;
+    box-shadow: none; /* 移除悬停阴影 */
+}
+
+/* Photo Album Grid Layout */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two images per row */
+    gap: 20px; /* Adjusted gap for better spacing */
+    margin-top: 20px;
+}
+
+.photo-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; /* 鼠标悬停时显示可点击 */
+}
+
+.photo-grid img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
