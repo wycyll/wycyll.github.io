@@ -136,7 +136,14 @@ function removeModalOverlay() {
     }
 }
 
+/*
+ * 点击日历格子时显示日期相关的操作面板（仅打开用户/心情选择）
+ * 说明：原先会同时自动弹出“日志”模态框，用户希望点击日历时不要自动跳出日志。
+ * 我们修改逻辑为：点击日期只打开“用户/心情选择”模态框，模态内提供一个按钮“查看/编辑日志”
+ * 用户需要时再点击该按钮打开日志模态框（按需加载，避免打扰）。
+ */
 function openDateModal(day, year, month) {
+    // 先移除已有的同类模态框，确保页面中只有一个对应 id 的模态框
     document.getElementById('user-modal')?.remove();
     document.getElementById('mood-modal')?.remove();
     document.getElementById('log-modal')?.remove();
@@ -150,34 +157,60 @@ function openDateModal(day, year, month) {
             <h3>记录 ${year}年${month + 1}月${day}日 的心情</h3>
             <p>请选择用户:</p>
             <div>${userButtons}</div>
-            <button onclick="document.getElementById('user-modal').remove()" style="margin-top: 15px;">关闭</button>
+            <div style="margin-top: 12px;">
+                <!-- 按需打开日志：避免点击日期时自动弹出 -->
+                <button onclick="openLogModal(${day}, ${year}, ${month})">查看/编辑日志</button>
+                <button onclick="document.getElementById('user-modal')?.remove()" style="margin-left:8px;">关闭</button>
+            </div>
         </div>
     `;
 
     createModal('user-modal', modalContent);
+}
 
-    // 打开日志模态框
+/*
+ * 打开指定日期的日志模态框（按需调用）
+ * - 使用独立的 textarea id（log-modal-input），避免与页面上已经存在的日志输入框冲突。
+ * - 保存时会同时同步更新页面上的日志输入框（若存在），并写入 localStorage。
+ */
+function openLogModal(day, year, month) {
+    document.getElementById('log-modal')?.remove();
+
     const logKey = `${year}-${month + 1}-${day}`;
     const existingLog = localStorage.getItem(`log-${logKey}`) || '';
 
     const logModalContent = `
         <div class="modal-content">
             <h3>${year}年${month + 1}月${day}日 日志</h3>
-            <textarea id="log-input" style="width: 100%; height: 150px;">${existingLog}</textarea>
-            <button onclick="saveLog('${logKey}')" style="margin-top: 15px;">保存</button>
-            <button onclick="document.getElementById('log-modal').remove()" style="margin-top: 15px;">关闭</button>
+            <textarea id="log-modal-input" style="width: 100%; height: 150px;">${existingLog}</textarea>
+            <div style="margin-top:12px;">
+                <button onclick="saveLog('${logKey}')">保存</button>
+                <button onclick="document.getElementById('log-modal')?.remove()" style="margin-left:8px;">关闭</button>
+            </div>
         </div>
     `;
 
     createModal('log-modal', logModalContent);
 }
 
+/*
+ * 保存指定日期的日志到 localStorage
+ * - 优先读取模态框中的 textarea(id=log-modal-input)，若不存在则回退到页面上的 textarea(id=log-input)
+ * - 保存后关闭日志模态框并刷新日历显示；如果页面上存在日志输入框，也同步更新它的值
+ */
 function saveLog(logKey) {
-    const logInput = document.getElementById('log-input');
+    const modalInput = document.getElementById('log-modal-input');
+    const pageInput = document.getElementById('log-input'); // 页面中用于“今天”的日志编辑框（可能存在）
+    const logInput = modalInput || pageInput;
+
     if (logInput) {
         localStorage.setItem(`log-${logKey}`, logInput.value);
         document.getElementById('log-modal')?.remove();
         generateCalendar(currentYear, currentMonth);
+        // 同步页面上的日志输入框（如果是从模态框保存且页面上有该输入框）
+        if (modalInput && pageInput) {
+            pageInput.value = modalInput.value;
+        }
     }
 }
 
