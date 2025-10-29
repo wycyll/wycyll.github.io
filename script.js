@@ -1,4 +1,3 @@
-
 // Timer to calculate the duration of the relationship
 const timerElement = document.getElementById('timer');
 const startDate = new Date('2025-07-21T00:00:00'); // Start date
@@ -99,7 +98,7 @@ function generateCalendar(year, month) {
         dayCell.innerHTML = content;
         dayCell.onclick = () => openDateModal(day, year, month);
 
-        // 【关键修正】: 使用 classList 来标记今天，让 CSS 来设置棕色背景
+        // 使用 classList 来标记今天，让 CSS 来设置棕色背景
         if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
             dayCell.classList.add('today'); 
         }
