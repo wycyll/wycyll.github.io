@@ -1,3 +1,4 @@
+
 // Timer to calculate the duration of the relationship
 const timerElement = document.getElementById('timer');
 const startDate = new Date('2025-07-21T00:00:00'); // Start date
